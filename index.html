@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Advanced Google Dorks Tool</title>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background:#0d1117; color:#e6edf3; }
+    h2 { color:#58a6ff; }
+    .box { background:#161b22; padding:20px; border-radius:10px; margin-bottom:20px; }
+    input, textarea { width:100%; padding:10px; margin:10px 0; border:none; border-radius:6px; background:#0d1117; color:white; }
+    button { padding:10px 20px; background:#238636; color:white; border:none; border-radius:6px; cursor:pointer; }
+    button:hover { background:#2ea043; }
+    a { color:#58a6ff; text-decoration:none; }
+    .result a { display:block; margin:4px 0; }
+</style>
+</head>
+<body>
+<h2>Google Dorks Bug Bounty Tool</h2>
+<div class="box">
+<h3>Enter Target Domain</h3>
+<input type="text" id="domain" placeholder="example.com" />
+<h3>Paste Dorks</h3>
+<textarea id="dorks" rows="12" placeholder="Paste dorks list here..."></textarea>
+<button onclick="generate()">Generate Google Dork Links</button>
+</div>
+
+<h3>Generated Dork Links</h3>
+<div id="output" class="result box"></div>
+
+<script>
+function generate() {
+    let domain = document.getElementById('domain').value.trim();
+    let dorks = document.getElementById('dorks').value.trim().split(/\n+/);
+    let out = document.getElementById('output');
+    out.innerHTML = '';
+
+    dorks.forEach(d => {
+        if (!d) return;
+        let q = d.startsWith('site:') ? d : `site:${domain} ${d}`;
+        let url = `https://www.google.com/search?q=` + encodeURIComponent(q);
+        let a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.textContent = url;
+        out.appendChild(a);
+    });
+}
+</script>
+</body>
+</html>
